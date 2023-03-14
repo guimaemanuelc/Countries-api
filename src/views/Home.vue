@@ -1,13 +1,13 @@
 <template>
     <div class="[ container ]" >
-      <HeaderCountry />
+      <HeaderCountry @toggleTheme="$emit('toggleTheme')"/>
 
       <div class="[ search ]">
-        <FilterCountries />
+        <FilterCountries @updateSearch="search = $event" @updateFilter= "filter = $event"/>
       </div>
 
       <div class="[ home ]">
-        <CountryCard v-for="(country, index) in countries" :key="index" :country="country" @openDetails="goToDetails"/>
+        <CountryCard class="[ home_card ]" v-for="(country, index) in countriesList" :key="index" :country="country" @openDetails="goToDetails"/>
       </div>
     </div>
 </template>
@@ -28,19 +28,35 @@
       data() {
         return {
           countries: [],
+          search: '',
+          filter: null
         }
+      },
+      computed: {
+        countriesList() {
+          const filterValidation = (contry)=> {
+            if (this.filter) {
+              return contry.region === this.filter
+            }
+            return true;
+          }
+          return this.countries.filter((country) => country.name.includes(this.search)  && filterValidation(country))
+       }
       },
       created() {
         CountriesService.getAll().then(({ data }) => {
-          this.countries = data.map((country) => ({
+          this.countries = data.map((country) => ({   
             id: country.cca2,
             name: country.name.official,
             population: country.population,
             flag: country.flags.png,
             region: country.region,
-            capital: country.capital,
-          }))
-        });
+            capital: country.capital ? country.capital[0] : '',
+            subregion: country.subregion,
+            languages: country.languages,
+            nativeName: country.name.nativeName,   
+          }))       
+        })
       },
       methods: {
         goToDetails(id) {
@@ -55,11 +71,52 @@
     font-family: 'Nunito Sans';
     color: var(--very-dark-blue-text);
 
+  .search {
+    padding: 30px 85px;
+  }
+
   .home {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    padding: 0 85px;
-    gap: 60px;
+    row-gap: 60px;
+    padding-left: 82px;
+    padding-bottom: 30px;
+    background-color: var(--very-light-gray);
+  }
+
+  @media only screen and (max-width:1270px ) {
+    .home {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media only screen and (max-width:1000px ) {
+    .search {
+      padding-right: 85px;
+    }
+    
+    .home {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media only screen and (max-width:700px ) {
+    .search {
+      padding: 30px 20px;
+    }
+
+    .home {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media only screen and (max-width:430px ) {
+    .search {
+      padding: 20px 10px;
+    }
+
+    .home {
+      padding-left: 45px;
+    }
   }
 }
 </style>

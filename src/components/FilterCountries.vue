@@ -1,7 +1,7 @@
 <template>
   <div class="[ filter ]">
-    <CountrySearch/>
-    <CountryContinents />
+    <CountrySearch @update="$emit('updateSearch', $event)"/>
+    <CountryContinents @update="$emit('updateFilter', $event)"/>
   </div>
 </template>
 
@@ -14,7 +14,7 @@ export default {
     components: {
         CountrySearch,
         CountryContinents
-    }
+    },
 }
 </script>
 
@@ -23,6 +23,8 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 40px 85px;
+    flex-wrap: wrap;
+    row-gap: 25px;
+    background-color:  var( --very-light-gray);
 }
 </style>

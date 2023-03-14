@@ -36,11 +36,14 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .country-card {
   border: 1px solid black;
+  width: 280px;
   height: 320px;
   display: flex;
+  background-color: var(--white);
+  color: var(--very-dark-blue-text);
   border-radius: 7px;
   flex-direction: column;
   border: none;

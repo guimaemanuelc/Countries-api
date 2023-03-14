@@ -3,7 +3,8 @@ const enums = {
 }
 
 const endpoints = {
-    ALL: '/all'
+    ALL: '/all',
+    GET: (id) => `/alpha/${id}`
 }
 
 export {enums, endpoints};

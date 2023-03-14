@@ -9,5 +9,14 @@ export default {
                 reject(err)
             })
         }) 
+    },
+    get(id) {
+        return new Promise ((resolve, reject) => {
+            axios.get(`${enums.BASE_URL}${endpoints.GET(id)}`).then((response)=> {
+                resolve(response)
+            }).catch((err) => {
+                reject(err)
+            })
+         })
     }
 }
