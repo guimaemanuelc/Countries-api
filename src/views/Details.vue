@@ -3,7 +3,15 @@
     <HeaderCountry @toggleTheme="$emit('toggleTheme')"/>
     <BackHome class="backhome"/>
     <div>
-      <CountryStatus :country="country"/>
+      <CountryStatus
+       :country="country"
+       :currencies="countryCurrencies"
+       :languages="countryLanguages"
+       :flags="countryFlags"
+       :nativeName="nativeName"
+       :borders="borders"
+       :tld="tld"/>
+
     </div>
   </div>
 </template>
@@ -23,13 +31,24 @@ export default {
     },
     data() {
       return {
-        country: {}
+        country: {},
+        countryLanguages: [],
+        countryCurrencies: [],
+        countryFlags: [],
+        nativeName: '',
+        tld: []
       }
     },
     created() {
         const { id } = this.$route.params
         CountriesService.get(id).then(({data}) => {
           this.country = data[0]
+          this.countryLanguages = this.country.languages
+          this.countryCurrencies = this.country.currencies
+          this.countryFlags = this.country.flags.png
+          this.nativeName =  this.country.name.nativeName.official
+          this.borders = this.country.borders
+          this.tld = this.country.tld[0]
         })
     },
 }

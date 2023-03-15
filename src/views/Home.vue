@@ -12,59 +12,57 @@
     </div>
 </template>
 
-  <script>
-  import HeaderCountry from '@/components/HeaderCountry.vue'
-  import CountryCard from '../components/CountryCard.vue'
-  import CountriesService from '@/services/CountriesService';
-  import FilterCountries from '../components/FilterCountries.vue';
+<script>
+import HeaderCountry from '@/components/HeaderCountry.vue'
+import CountryCard from '../components/CountryCard.vue'
+import CountriesService from '@/services/CountriesService';
+import FilterCountries from '../components/FilterCountries.vue';
   
-    export default {
-      name: 'HomePage',
-      components: {
-        HeaderCountry,
-        CountryCard,
-        FilterCountries
-      },
-      data() {
-        return {
-          countries: [],
-          search: '',
-          filter: null
-        }
-      },
-      computed: {
-        countriesList() {
-          const filterValidation = (contry)=> {
-            if (this.filter) {
-              return contry.region === this.filter
-            }
-            return true;
-          }
-          return this.countries.filter((country) => country.name.includes(this.search)  && filterValidation(country))
-       }
-      },
-      created() {
-        CountriesService.getAll().then(({ data }) => {
-          this.countries = data.map((country) => ({   
-            id: country.cca2,
-            name: country.name.official,
-            population: country.population,
-            flag: country.flags.png,
-            region: country.region,
-            capital: country.capital ? country.capital[0] : '',
-            subregion: country.subregion,
-            languages: country.languages,
-            nativeName: country.name.nativeName,   
-          }))       
-        })
-      },
-      methods: {
-        goToDetails(id) {
-          this.$router.push({ name: 'country', params: { id } })
-        },
+  export default {
+    name: 'HomePage',
+    components: {
+      HeaderCountry,
+      CountryCard,
+      FilterCountries
+    },
+    data() {
+      return {
+        countries: [],
+        search: '',
+        filter: null,
       }
+    },
+    computed: {
+      countriesList() {
+        const filterValidation = (contry)=> {
+          if (this.filter) {
+            return contry.region === this.filter
+          }
+            return true;
+        }
+          return this.countries.filter((country) => country.name.includes(this.search)  && filterValidation(country))
+      }
+    },
+    created() {
+      CountriesService.getAll().then(({ data }) => {
+        this.countries = data.map((country) => ({   
+          id: country.cca2,
+          name: country.name.official,
+          population: country.population,
+          flag: country.flags.png,
+          region: country.region,
+          capital: country.capital ? country.capital[0] : '',            
+          subregion: country.subregion,
+        }))       
+      })
+    },
+    methods: {
+      goToDetails(id) {
+        this.$router.push({ name: 'country', params: { id } })
+      },
     }
-  </script>
+  }
+</script>
 
 <style lang="scss">
 .container{

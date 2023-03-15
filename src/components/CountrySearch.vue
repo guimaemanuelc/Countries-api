@@ -49,6 +49,10 @@ export default {
          background-color: var(--white);
          color: var(--very-dark-blue-text);
          margin-right: 60px;
+
+         &::placeholder {
+          color: var(--very-dark-blue-text);
+         }
      }
 
      @media only screen and (max-width: 430px) {
